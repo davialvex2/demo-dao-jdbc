@@ -12,13 +12,14 @@ import java.util.Properties;
 public class DB {
 
 	private static Connection conn = null;
+        private static final String url = "jdbc:mysql://localhost:3306/coursejdbc"; 
+        private static final String user = "root";
+        private static final String senha = "1234567"; 
 	
 	public static Connection getConnection() {
 		if (conn == null) {
 			try {
-				Properties props = loadProperties();
-				String url = props.getProperty("dburl");
-				conn = DriverManager.getConnection(url, props);
+				conn = DriverManager.getConnection(url, user, senha);
 			}
 			catch (SQLException e) {
 				throw new DbException(e.getMessage());

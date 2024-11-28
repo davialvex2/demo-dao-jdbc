@@ -4,7 +4,10 @@
  */
 package aplicacao;
 
+import entidades.DaoFactory;
 import entidades.Departamento;
+import entidades.Vendedor;
+import model.dao.VendedorDao;
 
 /**
  *
@@ -14,8 +17,12 @@ public class Programa {
     
     public static void main(String[] args){
         
-        Departamento obj = new Departamento(1,"Livros");
-        System.out.println(obj);
+        VendedorDao vend = DaoFactory.criarVendedorDao();
+        
+        Vendedor vendedor = vend.buscarId(2);
+        
+        
+        System.out.println(vendedor);
         
     }
 }

@@ -4,6 +4,7 @@
  */
 package entidades;
 
+import db.DB;
 import model.dao.VendedorDao;
 import model.dao.jdbc.VendedorDaoJDBC;
 
@@ -14,7 +15,7 @@ import model.dao.jdbc.VendedorDaoJDBC;
 public class DaoFactory {
     
     public static VendedorDao criarVendedorDao(){
-        return new VendedorDaoJDBC();
+        return new VendedorDaoJDBC(DB.getConnection());
     }
     
 }

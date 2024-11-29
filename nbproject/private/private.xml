@@ -5,7 +5,8 @@
         <group>
             <file>file:/C:/Users/Computador/Documents/NetBeansProjects/demo-dao-jdbc/src/entidades/Departamento.java</file>
             <file>file:/C:/Users/Computador/Documents/NetBeansProjects/demo-dao-jdbc/src/aplicacao/Programa.java</file>
-            <file>file:/C:/Users/Computador/Documents/NetBeansProjects/demo-dao-jdbc/src/entidades/Vendedor.java</file>
+            <file>file:/C:/Users/Computador/Documents/NetBeansProjects/demo-dao-jdbc/src/entidades/DaoFactory.java</file>
+            <file>file:/C:/Users/Computador/Documents/NetBeansProjects/demo-dao-jdbc/src/model/dao/jdbc/VendedorDaoJDBC.java</file>
         </group>
     </open-files>
 </project-private>

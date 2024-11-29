@@ -48,21 +48,19 @@ public class VendedorDaoJDBC implements VendedorDao{
     @Override
     public Vendedor buscarId(Integer id) {
         try{
-        st = conn.prepareStatement("SELECT seller.*,department.Name as DepName FROM seller INNER JOIN department ON seller.DepartmentId = department.Id WHERE seller.Id = ?");
+        st = conn.prepareStatement("SELECT seller.*,department.Name as DepName FROM seller "
+                + "INNER JOIN department ON seller.DepartmentId = department.Id "
+                + "WHERE seller.Id = ?");
+        
         
         st.setInt(1, id);
         rs = st.executeQuery();
         if(rs.next()){
-            Departamento dep = new Departamento();
-            dep.setId(rs.getInt("DepartmentId"));
-            dep.setNome(rs.getString("DepName"));
-            Vendedor vend = new Vendedor();
-            vend.setId(rs.getInt("Id"));
-            vend.setNome(rs.getString("Name"));
-            vend.setEmail(rs.getString("Email"));
-            vend.setBirthDate(rs.getDate("BirthDate"));
-            vend.setSalarioBase(rs.getDouble("BaseSalary"));
-            vend.setDepartamento(dep);
+            Departamento dep = instaciarDepartamento(rs);
+            
+            Vendedor vend = instaciarVendedor(rs, dep);
+            
+           
             return vend;
         }
         return null;
@@ -79,6 +77,24 @@ public class VendedorDaoJDBC implements VendedorDao{
     @Override
     public List<Vendedor> buscarTodos() {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+
+    private Departamento instaciarDepartamento(ResultSet rs) throws SQLException {
+        Departamento dep = new Departamento();    
+            dep.setId(rs.getInt("DepartmentId"));
+            dep.setNome(rs.getString("DepName"));
+            return dep;
+    }
+
+    private Vendedor instaciarVendedor(ResultSet rs,  Departamento dep) throws SQLException {
+            Vendedor vend = new Vendedor();
+            vend.setId(rs.getInt("Id"));
+            vend.setNome(rs.getString("Name"));
+            vend.setEmail(rs.getString("Email"));
+            vend.setBirthDate(rs.getDate("BirthDate"));
+            vend.setSalarioBase(rs.getDouble("BaseSalary"));
+            vend.setDepartamento(dep);
+            return vend;
     }
     
 }

@@ -60,9 +60,9 @@ public class VendedorDaoJDBC implements VendedorDao{
         st.setInt(1, id);
         rs = st.executeQuery();
         if(rs.next()){
-            Departamento dep = instaciarDepartamento(rs);
+            Departamento dep = instanciarDepartamento(rs);
             
-            Vendedor vend = instaciarVendedor(rs, dep);
+            Vendedor vend = instanciarVendedor(rs, dep);
             
            
             return vend;
@@ -80,17 +80,50 @@ public class VendedorDaoJDBC implements VendedorDao{
 
     @Override
     public List<Vendedor> buscarTodos() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        PreparedStatement st = null;
+        ResultSet rs = null;
+        try{
+        st = conn.prepareStatement("SELECT seller.*,department.Name as DepName "
+                + "FROM seller INNER JOIN department ON "
+                + "seller.DepartmentId = department.Id ORDER BY Name");
+        
+        rs = st.executeQuery();
+        
+        List<Vendedor> lista = new ArrayList<>();
+        Map<Integer, Departamento> map = new HashMap<>();
+        
+        while(rs.next()){
+            
+            Departamento dep = map.get(rs.getInt("DepartmentId"));
+            
+            if(dep == null){
+            dep = instanciarDepartamento(rs); 
+            map.put(rs.getInt("DepartmentId"), dep);
+            }
+            
+            
+            Vendedor vend = instanciarVendedor(rs, dep);
+            lista.add(vend);
+            }
+        return lista;
+        }
+        catch (SQLException e){
+            throw new DbException(e.getMessage());
+        }
+        finally{
+            DB.closeStatement(st);
+            DB.closeResultSet(rs);
+        }
     }
 
-    private Departamento instaciarDepartamento(ResultSet rs) throws SQLException {
+    private Departamento instanciarDepartamento(ResultSet rs) throws SQLException {
         Departamento dep = new Departamento();    
             dep.setId(rs.getInt("DepartmentId"));
             dep.setNome(rs.getString("DepName"));
             return dep;
     }
 
-    private Vendedor instaciarVendedor(ResultSet rs,  Departamento dep) throws SQLException {
+    private Vendedor instanciarVendedor(ResultSet rs,  Departamento dep) throws SQLException {
             Vendedor vend = new Vendedor();
             vend.setId(rs.getInt("Id"));
             vend.setNome(rs.getString("Name"));
@@ -124,12 +157,12 @@ public class VendedorDaoJDBC implements VendedorDao{
             Departamento dep = map.get(rs.getInt("DepartmentId"));
             
             if(dep == null){
-            dep = instaciarDepartamento(rs); 
+            dep = instanciarDepartamento(rs); 
             map.put(rs.getInt("DepartmentId"), dep);
             }
             
             
-            Vendedor vend = instaciarVendedor(rs, dep);
+            Vendedor vend = instanciarVendedor(rs, dep);
             lista.add(vend);
             }
         return lista;

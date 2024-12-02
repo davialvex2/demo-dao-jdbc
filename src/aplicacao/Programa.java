@@ -21,20 +21,25 @@ public class Programa {
         
         VendedorDao vend = DaoFactory.criarVendedorDao();
         Vendedor vendedor = vend.buscarId(2);
+        System.out.println("Buscar de Vendedor pelo ID");
         System.out.println(vendedor);
+        System.out.println("");
+        
+       
         
         Departamento departamento = new Departamento(2,null);
-        
-        
         List<Vendedor> lista = vend.buscarDepartamento(departamento);
-        System.out.println("LISTA");
+        System.out.println("Busca de Vendedores pelo departamento");
         for(Object list : lista){
             System.out.println(list);
-            
         }
+        System.out.println("");
         
-        
-        
-        
+        lista = vend.buscarTodos();
+        System.out.println("Busca de Vendedores");
+        for(Object list : lista){
+            System.out.println(list);
+        }
+
     }
 }

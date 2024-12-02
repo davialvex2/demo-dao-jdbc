@@ -14,6 +14,9 @@ import java.sql.ResultSet;
 import java.util.List;
 import model.dao.VendedorDao;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  *
@@ -27,8 +30,7 @@ public class VendedorDaoJDBC implements VendedorDao{
         this.conn = conn;
     }
     
-    PreparedStatement st = null;
-    ResultSet rs = null;
+    
 
     @Override
     public void inserir(Vendedor obj) {
@@ -47,6 +49,8 @@ public class VendedorDaoJDBC implements VendedorDao{
 
     @Override
     public Vendedor buscarId(Integer id) {
+        PreparedStatement st = null;
+        ResultSet rs = null;
         try{
         st = conn.prepareStatement("SELECT seller.*,department.Name as DepName FROM seller "
                 + "INNER JOIN department ON seller.DepartmentId = department.Id "
@@ -95,6 +99,48 @@ public class VendedorDaoJDBC implements VendedorDao{
             vend.setSalarioBase(rs.getDouble("BaseSalary"));
             vend.setDepartamento(dep);
             return vend;
+    }
+
+    @Override
+    public List<Vendedor> buscarDepartamento(Departamento departamento) {
+        
+        PreparedStatement st = null;
+        ResultSet rs = null;
+        try{
+        st = conn.prepareStatement("SELECT seller.*,department.Name as DepName "
+                + "FROM seller INNER JOIN department ON "
+                + "seller.DepartmentId = department.Id WHERE DepartmentId = ? ORDER BY Name");
+        
+        
+        st.setInt(1, departamento.getId());
+        
+        rs = st.executeQuery();
+        
+        List<Vendedor> lista = new ArrayList<>();
+        Map<Integer, Departamento> map = new HashMap<>();
+        
+        while(rs.next()){
+            
+            Departamento dep = map.get(rs.getInt("DepartmentId"));
+            
+            if(dep == null){
+            dep = instaciarDepartamento(rs); 
+            map.put(rs.getInt("DepartmentId"), dep);
+            }
+            
+            
+            Vendedor vend = instaciarVendedor(rs, dep);
+            lista.add(vend);
+            }
+        return lista;
+        }
+        catch (SQLException e){
+            throw new DbException(e.getMessage());
+        }
+        finally{
+            DB.closeStatement(st);
+            DB.closeResultSet(rs);
+        }
     }
     
 }

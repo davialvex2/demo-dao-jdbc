@@ -4,6 +4,7 @@
  */
 package model.dao;
 
+import entidades.Departamento;
 import entidades.Vendedor;
 import java.util.List;
 
@@ -18,5 +19,6 @@ public interface VendedorDao {
     void excluirId(Integer id);
     Vendedor buscarId(Integer id);
     List<Vendedor> buscarTodos();
+    List<Vendedor> buscarDepartamento(Departamento dep);
     
 }

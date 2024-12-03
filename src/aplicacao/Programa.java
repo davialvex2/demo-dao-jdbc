@@ -41,11 +41,19 @@ public class Programa {
         for(Object list : lista){
             System.out.println(list);
         }
-        
+        System.out.println("");
         System.out.println("--INSERINDO NOVO VENDEDOR--");
         Vendedor novoVendedor = new Vendedor(null, "Daniel Miranda", "daniel@gmail.com", new Date(), 8000.0, departamento);
         vend.inserir(novoVendedor);
         System.out.println("Novo Vendedor Inserido ID: " + novoVendedor.getId());
+        System.out.println("");
+        
+        System.out.println("--ATUALIZANDO VENDEDOR--");
+        vendedor = vend.buscarId(8);
+        vendedor.setNome("Paulo Ricardo");
+        vendedor.setEmail("paulo@gmail.com");
+        vend.atualizar(vendedor);
+        System.out.println("Atualização concluída");
         
     }
 }

@@ -5,7 +5,10 @@
 package entidades;
 
 import db.DB;
+import java.sql.Connection;
+import model.dao.DepartamentoDao;
 import model.dao.VendedorDao;
+import model.dao.jdbc.DepartamentoDaoJDBC;
 import model.dao.jdbc.VendedorDaoJDBC;
 
 /**
@@ -18,4 +21,7 @@ public class DaoFactory {
         return new VendedorDaoJDBC(DB.getConnection());
     }
     
+    public static DepartamentoDao criarDepartamentoDao(){
+        return new DepartamentoDaoJDBC(DB.getConnection());
+    } 
 }

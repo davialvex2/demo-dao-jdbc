@@ -25,7 +25,7 @@ public class Programa {
         
         VendedorDao vend = DaoFactory.criarVendedorDao();
         Vendedor vendedor = vend.buscarId(2);
-        System.out.println("Buscar de Vendedor pelo ID");
+        System.out.println("BUSCA DO VENDEDOR PELO ID");
         System.out.println(vendedor);
         System.out.println("");
         
@@ -33,14 +33,14 @@ public class Programa {
         
         Departamento departamento = new Departamento(2,null);
         List<Vendedor> lista = vend.buscarDepartamento(departamento);
-        System.out.println("Busca de Vendedores pelo departamento");
+        System.out.println("BUSCA DO VENDEDOR PELO DEPARTAMENTO");
         for(Object list : lista){
             System.out.println(list);
         }
         System.out.println("");
         
         lista = vend.buscarTodos();
-        System.out.println("Busca de Vendedores");
+        System.out.println("BUSCANDO TODOS OS VENDEDORES");
         for(Object list : lista){
             System.out.println(list);
         }
@@ -59,9 +59,10 @@ public class Programa {
         System.out.println("Atualização concluída");
         System.out.println("");
         
-         System.out.println("--EXCLUIR VENDEDOR--");
-         System.out.println("Digite o Id do vendedor para excluir");
-         int id = tec.nextInt();
-         vend.excluirId(id);
+        System.out.println("--EXCLUIR VENDEDOR--");
+        System.out.println("Digite o Id do vendedor para excluir");
+        int id = tec.nextInt();
+        vend.excluirId(id);
+        System.out.println("Excluido com Sucesso!");
     }
 }

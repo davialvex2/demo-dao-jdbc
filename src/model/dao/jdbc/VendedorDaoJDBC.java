@@ -29,8 +29,6 @@ public class VendedorDaoJDBC implements VendedorDao{
     public VendedorDaoJDBC(Connection conn){
         this.conn = conn;
     }
-    
-    
 
     @Override
     public void inserir(Vendedor obj) {

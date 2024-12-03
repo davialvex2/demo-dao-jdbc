@@ -34,7 +34,39 @@ public class VendedorDaoJDBC implements VendedorDao{
 
     @Override
     public void inserir(Vendedor obj) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        PreparedStatement st = null;
+        ResultSet rs = null;
+        try{
+            st = conn.prepareStatement("INSERT INTO seller "
+                    + "(Name, Email, BirthDate, BaseSalary, DepartmentId) "
+                    + "VALUES (?, ?, ?, ?, ?)", PreparedStatement.RETURN_GENERATED_KEYS);
+            
+            st.setString(1, obj.getNome());
+            st.setString(2, obj.getEmail());
+            st.setDate(3, new java.sql.Date(obj.getBirthDate().getTime()));
+            st.setDouble(4, obj.getSalarioBase());
+            st.setInt(5,obj.getDepartamento().getId());
+            
+            int linhas = st.executeUpdate();
+            
+            if(linhas > 0){
+                ResultSet res = st.getGeneratedKeys();
+                if(res.next()){
+                    int id = res.getInt(1);
+                    obj.setId(id);
+                }
+            }
+            else{
+                throw new DbException("Não foi inserido nenhum Vendedor");
+            }
+        }
+        catch(SQLException e){
+            throw new DbException(e.getMessage());
+        }
+        finally{
+            DB.closeResultSet(rs);
+            DB.closeStatement(st);
+        } 
     }
 
     @Override

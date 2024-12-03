@@ -8,6 +8,7 @@ import entidades.DaoFactory;
 import entidades.Departamento;
 import entidades.Vendedor;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import model.dao.VendedorDao;
 
@@ -40,6 +41,11 @@ public class Programa {
         for(Object list : lista){
             System.out.println(list);
         }
-
+        
+        System.out.println("--INSERINDO NOVO VENDEDOR--");
+        Vendedor novoVendedor = new Vendedor(null, "Daniel Miranda", "daniel@gmail.com", new Date(), 8000.0, departamento);
+        vend.inserir(novoVendedor);
+        System.out.println("Novo Vendedor Inserido ID: " + novoVendedor.getId());
+        
     }
 }

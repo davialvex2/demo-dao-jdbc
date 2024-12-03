@@ -10,6 +10,7 @@ import entidades.Vendedor;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Scanner;
 import model.dao.VendedorDao;
 
 /**
@@ -19,6 +20,8 @@ import model.dao.VendedorDao;
 public class Programa {
     
     public static void main(String[] args){
+         
+        Scanner tec = new Scanner(System.in);
         
         VendedorDao vend = DaoFactory.criarVendedorDao();
         Vendedor vendedor = vend.buscarId(2);
@@ -54,6 +57,11 @@ public class Programa {
         vendedor.setEmail("paulo@gmail.com");
         vend.atualizar(vendedor);
         System.out.println("Atualização concluída");
+        System.out.println("");
         
+         System.out.println("--EXCLUIR VENDEDOR--");
+         System.out.println("Digite o Id do vendedor para excluir");
+         int id = tec.nextInt();
+         vend.excluirId(id);
     }
 }

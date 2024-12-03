@@ -100,7 +100,23 @@ public class VendedorDaoJDBC implements VendedorDao{
 
     @Override
     public void excluirId(Integer id) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        PreparedStatement st = null;
+        try{
+            st = conn.prepareStatement("DELETE FROM seller WHERE Id = ?");
+            st.setInt(1, id);
+            
+            int linhas = st.executeUpdate();
+            
+            if(linhas == 0){
+                throw new DbException("Id inexistente");
+            }
+        }
+        catch(SQLException e){
+            throw new DbException(e.getMessage());
+        }
+        finally{
+            DB.closeStatement(st);
+        }  
     }
 
     @Override

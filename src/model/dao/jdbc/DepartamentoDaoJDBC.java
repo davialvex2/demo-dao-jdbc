@@ -58,29 +58,109 @@ public class DepartamentoDaoJDBC implements DepartamentoDao{
             }
         finally{
             DB.closeStatement(st);
-        }
-        
-        
+        }  
     }
+    
 
     @Override
     public void atualizar(Departamento obj) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        PreparedStatement st = null;
+        
+        try{
+            st = conn.prepareStatement("UPDATE department SET Name = ? WHERE Id = ?"); 
+                    
+            st.setString(1, obj.getNome());
+            st.setInt(2,obj.getId());
+            
+            st.executeUpdate();
+            
+        }
+        catch(SQLException e){
+            throw new DbException(e.getMessage());
+        }
+        finally{
+            DB.closeStatement(st);
+        }   
     }
+    
 
     @Override
     public void excluirId(Integer id) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        PreparedStatement st = null;
+        try{
+            st = conn.prepareStatement("DELETE FROM department WHERE Id = ?");
+            st.setInt(1, id);
+            
+            int linhas = st.executeUpdate();
+            if(linhas == 0){
+                throw new DbException("Esse ID não existe");
+            }  
+        }
+        catch(SQLException e){
+            throw new DbException(e.getMessage());
+        }
+        finally{
+            DB.closeStatement(st);
+        }  
+        
     }
 
     @Override
     public Departamento buscarId(Integer id) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        PreparedStatement st = null;
+        ResultSet rs = null;
+        
+        try{
+            st = conn.prepareStatement("SELECT * FROM department where Id = ?");
+            st.setInt(1, id);
+            rs = st.executeQuery();
+            Departamento dep = null;
+            if(rs.next()){
+                dep = instanciarDepartamento(rs);
+            }
+            return dep;
+        }
+        catch(SQLException e){
+            throw new DbException(e.getMessage());
+        }
+        finally{
+            DB.closeStatement(st);
+            DB.closeResultSet(rs);
+        }
     }
 
     @Override
     public List<Departamento> buscarTodos() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        PreparedStatement st = null;
+        ResultSet rs = null;
+        try{
+        st = conn.prepareStatement("SELECT * FROM department");
+        
+        rs = st.executeQuery();
+        
+        List<Departamento> lista = new ArrayList<>();
+        
+        while(rs.next()){
+            Departamento dep = instanciarDepartamento(rs);
+            lista.add(dep);
+        }
+        return lista;
+        }
+        catch(SQLException e){
+            throw new DbException(e.getMessage());
+        }
+        finally{
+            DB.closeStatement(st);
+            DB.closeResultSet(rs);
+        }
     }
+        
     
+    private Departamento instanciarDepartamento(ResultSet rs) throws SQLException {
+        Departamento dep = new Departamento();    
+            dep.setId(rs.getInt("Id"));
+            dep.setNome(rs.getString("Name"));
+            return dep;
+    
+            }
 }

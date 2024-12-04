@@ -29,7 +29,6 @@ public class Programa {
         System.out.println(vendedor);
         System.out.println("");
         
-       
         
         Departamento departamento = new Departamento(2,null);
         List<Vendedor> lista = vend.buscarDepartamento(departamento);
@@ -64,5 +63,7 @@ public class Programa {
         int id = tec.nextInt();
         vend.excluirId(id);
         System.out.println("Excluido com Sucesso!");
+        
+        tec.close();
     }
 }
